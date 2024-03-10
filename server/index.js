@@ -1,13 +1,18 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import morgan from 'morgan';
 import authRoutes from './routes/auth.js';
 
 const app = express();
 
-// Middleware:
+// Middleware: ------------------------------------------------------------------------------
+
 app.use(express.json());
-app.use(cors());
+app.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
+app.use(morgan('dev'));
+
+// Database: --------------------------------------------------------------------------------
 
 const database = async () => {
     try {
@@ -20,14 +25,16 @@ const database = async () => {
 
 database();
 
-// API:
+// API: -------------------------------------------------------------------------------------
+
 app.use('/auth', authRoutes);
 
 app.listen(8000, () => {
     console.log(`Server is running on http://localhost:8000`);
 })
 
-// Error handling:
+// Error handling: --------------------------------------------------------------------------
+
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     const message = err.message || 'Internal Server Error';
