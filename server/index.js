@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 import authRoutes from './routes/auth.js';
 
 const app = express();
@@ -9,6 +10,7 @@ const app = express();
 // Middleware: ------------------------------------------------------------------------------
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
 app.use(morgan('dev'));
 

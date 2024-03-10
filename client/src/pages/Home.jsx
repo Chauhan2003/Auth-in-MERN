@@ -1,7 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Navbar from '../components/Navbar'
+import axios from 'axios'
 
 const Home = () => {
+    useEffect(() => {
+        const checkCookie = async () => {
+            try {
+                const res = await axios.get('http://localhost:8000/auth/userinfo');
+
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        checkCookie();
+    }, [])
     return (
         <div style={{
             width: '100%',
