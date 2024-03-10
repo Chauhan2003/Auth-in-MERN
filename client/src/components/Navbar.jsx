@@ -1,6 +1,18 @@
 import React from 'react'
+import axios from 'axios'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
+    const navigate = useNavigate();
+    const handleLogout = async (e) => {
+        try {
+            const res = await axios.get('http://localhost:8000/auth/logout');
+            navigate('/login');
+        } catch (err) {
+            toast.error(err.response.data.message);
+        }
+    }
     return (
         <div style={{
             position: 'fixed',
@@ -19,7 +31,7 @@ const Navbar = () => {
                 fontWeight: '600',
                 userSelect: 'none'
             }}>Auth</span>
-            <button style={{
+            <button onClick={handleLogout} style={{
                 padding: '7px 12px',
                 fontSize: '16px',
                 background: 'transparent',

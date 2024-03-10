@@ -69,6 +69,7 @@ export const handleLoginUser = async (req, res, next) => {
 
         const token = generateToken({
             _id: userExist._id,
+            username: userExist.username,
             email: userExist.email
         }, { expiresIn: '1h' });
 
@@ -86,6 +87,18 @@ export const handleLoginUser = async (req, res, next) => {
                 email: userExist.email
             }
         })
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const handleLogoutUser = async (req, res, next) => {
+    try {
+        res.clearCookie('authToken');
+        res.status(200).json({
+            success: true,
+            message: 'Logout successful'
+        });
     } catch (err) {
         next(err);
     }
