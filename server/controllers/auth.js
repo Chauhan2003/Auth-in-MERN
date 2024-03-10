@@ -1,5 +1,5 @@
 import User from "../models/user.js";
-import { hashPassword } from '../utils/password.js';
+import { comparePassword, hashPassword } from '../utils/password.js';
 import { errorHandler } from '../utils/error.js';
 
 export const handleRegisterUser = async (req, res, next) => {
@@ -39,6 +39,40 @@ export const handleRegisterUser = async (req, res, next) => {
                 _id: newUser._id,
                 username: newUser.username,
                 email: newUser.email
+            }
+        })
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const handleLoginUser = async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return next(errorHandler(400, "All fields are required"))
+        }
+
+        const userExist = await User.findOne({ email });
+
+        if (!userExist) {
+            return next(errorHandler(400, "User not exist"));
+        }
+
+        const isValidPassword = await comparePassword(password, userExist.password);
+
+        if (!isValidPassword) {
+            return next(errorHandler(400, "Invalid Email or Password"));
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Login Successfull",
+            user: {
+                _id: userExist._id,
+                username: userExist.username,
+                email: userExist.email
             }
         })
     } catch (err) {
