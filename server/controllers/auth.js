@@ -1,6 +1,7 @@
 import User from "../models/user.js";
 import { comparePassword, hashPassword } from '../utils/password.js';
 import { errorHandler } from '../utils/error.js';
+import { generateToken } from "../utils/token.js";
 
 export const handleRegisterUser = async (req, res, next) => {
     try {
@@ -65,6 +66,16 @@ export const handleLoginUser = async (req, res, next) => {
         if (!isValidPassword) {
             return next(errorHandler(400, "Invalid Email or Password"));
         }
+
+        const token = generateToken({
+            _id: userExist._id,
+            email: userExist.email
+        }, { expiresIn: '1h' });
+
+        res.cookie('authToken', token, {
+            httpOnly: true,
+            maxAge: 3600000
+        })
 
         res.status(200).json({
             success: true,
