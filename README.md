@@ -24,4 +24,4 @@ This project demonstrates user authentication and authorization in a Node.js app
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/Chauhan2003/Auth-in-MERN.git)https://github.com/Chauhan2003/Auth-in-MERN.git
+   git clone https://github.com/Chauhan2003/Auth-in-MERN.git
